@@ -18,7 +18,7 @@ export class SoldestComponent implements OnInit {
   products!: Product[];
   productsLength!: number;
   columns: string[] = ['image', 'productId', 'name', 'sold', 'category'];
-
+  
   labels: string[] = [];
   data: number[] = [];
   myChartBar !: Chart;
@@ -35,27 +35,61 @@ export class SoldestComponent implements OnInit {
   }
 
   getProduct() {
-    this.productService.getBestSeller().subscribe(data=>{
-      this.products = data as Product[];
-      this.listData = new MatTableDataSource(this.products);
-      this.listData.sort = this.sort;
-      this.listData.paginator = this.paginator;
-      for(let i = 0; i < 3; i++) {
-        this.labels.push(this.products[i].name);
-        this.data.push(this.products[i].sold);
+    this.productService.getBestSeller().subscribe(
+      data => {
+        this.products = data as Product[];
+        
+        // Check if we received any products
+        if (!this.products || this.products.length === 0) {
+          console.warn('No products received from API');
+          return;
+        }
+  
+        // Set up the table data
+        this.listData = new MatTableDataSource(this.products);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+  
+        // Clear existing arrays
+        this.labels = [];
+        this.data = [];
+  
+        // Safely process only available products
+        const maxProducts = Math.min(10, this.products.length);
+        
+        // First group (0-2)
+        for (let i = 0; i < Math.min(3, maxProducts); i++) {
+          if (this.products[i]) {
+            this.labels.push(this.products[i].name);
+            this.data.push(this.products[i].sold);
+          }
+        }
+  
+        // Second group (3-5)
+        for (let i = 3; i < Math.min(6, maxProducts); i++) {
+          if (this.products[i]) {
+            this.labels.push(this.products[i].name);
+            this.data.push(this.products[i].sold);
+          }
+        }
+  
+        // Third group (6-9)
+        for (let i = Math.min(9, maxProducts - 1); i >= 6; i--) {
+          if (this.products[i]) {
+            this.labels.push(this.products[i].name);
+            this.data.push(this.products[i].sold);
+          }
+        }
+  
+        // Only create chart if we have data
+        if (this.labels.length > 0 && this.data.length > 0) {
+          this.loadChartBar();
+        }
+      },
+      error => {
+        console.error('Error fetching products:', error);
       }
-      for(let i = 3; i < 6; i++) {
-        this.labels.push(this.products[i].name);
-        this.data.push(this.products[i].sold);
-      }
-      for(let i = 9; i >= 6; i--) {
-        this.labels.push(this.products[i].name);
-        this.data.push(this.products[i].sold);
-      }
-      this.loadChartBar();
-    }, error => {
-      console.log(error);
-    })
+    );
   }
 
   loadChartBar() {

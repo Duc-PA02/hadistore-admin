@@ -36,22 +36,32 @@ export class StatisticalCategoryComponent implements OnInit {
   }
 
   getCategoryBestSeller() {
-    this.statisticalService.getStatisticalBestSeller().subscribe(data=>{
-      this.categoryBestSeller = data as CategoryBestSeller[];
-
+    this.statisticalService.getStatisticalBestSeller().subscribe(data => {
+      console.log('Data from API:', data);
+    
+      // Kiểm tra nếu dữ liệu là null hoặc không phải mảng
+      if (!data || !Array.isArray(data)) {
+        console.warn('No data found or data is not an array.');
+        this.categoryBestSeller = []; // Gán giá trị rỗng
+      } else {
+        this.categoryBestSeller = data as CategoryBestSeller[];
+      }
+    
+      // Xử lý dữ liệu (rỗng hoặc có)
       this.listData = new MatTableDataSource(this.categoryBestSeller);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
-      this.lengthCategoryBestSeller = this.categoryBestSeller.length
-
-      this.categoryBestSeller.forEach(item=>{
+      this.lengthCategoryBestSeller = this.categoryBestSeller.length;
+    
+      this.categoryBestSeller.forEach(item => {
         this.dataMoney.push(item.amount);
         this.labelsCategory.push(item.name);
-        console.log(item.name);
-        
-      })
-      this.loadChartPie();
-    })
+      });
+    
+      this.loadChartPie(); // Vẫn gọi hàm để tránh lỗi nếu không có dữ liệu
+    }, error => {
+      console.error('Error fetching data:', error);
+    });    
   }
 
   loadChartPie() {
@@ -76,5 +86,4 @@ export class StatisticalCategoryComponent implements OnInit {
       },
     });
   }
-
 }

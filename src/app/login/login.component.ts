@@ -72,8 +72,8 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
 
         this.userService.getByEmail(data.email).subscribe(
-          (response: any) => {
-            const userTemp: Customer = response.data as Customer;
+          (data: any) => {
+            const userTemp: Customer = data as Customer;
           if (userTemp.roles[0].name == 'USER') {
             Swal.fire({
               icon: 'error',

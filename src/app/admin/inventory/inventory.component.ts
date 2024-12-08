@@ -40,10 +40,13 @@ export class InventoryComponent implements OnInit {
       this.listData = new MatTableDataSource(this.products);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
-      for(let i = 0; i < 10; i++) {
-        this.labels.push(this.products[i].name);
-        this.data.push(this.products[i].quantity);
-      }
+      for (let i = 0; i < Math.min(this.products.length, 10); i++) {
+        const product = this.products[i];
+        if (product && product.name && product.quantity !== undefined) {
+          this.labels.push(product.name);
+          this.data.push(product.quantity);
+        }
+      }      
       this.loadChartBar();
     }, error => {
       console.log(error);
