@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class OrderService {
   url = "http://localhost:8080/api/v1/orders";
 
-  urlOrderDetail = "http://localhost:8080/api/v1/orderDetail";
+  urlOrderDetail = "http://localhost:8080/api/v1/order-detail";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,15 +23,15 @@ export class OrderService {
     return this.httpClient.get(this.urlOrderDetail+'/order/'+id);
   }
 
-  cancel(id: number) {
-    return this.httpClient.get(this.url+'/cancel/'+id);
+  cancel(id: number, status: number) {
+    return this.httpClient.put(`${this.url}/${id}?status=${status}`, {});
   }
-
-  deliver(id: number) {
-    return this.httpClient.get(this.url+'/deliver/'+id);
+  
+  deliver(id: number, status: number) {
+    return this.httpClient.put(`${this.url}/${id}?status=${status}`, {});
   }
-
-  success(id: number) {
-    return this.httpClient.get(this.url+'/success/'+id);
-  }
+  
+  success(id: number, status: number) {
+    return this.httpClient.put(`${this.url}/${id}?status=${status}`, {});
+  }  
 }
