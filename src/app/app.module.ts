@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { AdminModule } from './admin/admin.module';
 import { LoginComponent } from './login/login.component';
 import { LoginModule } from './login/login.module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './helper/authInterceptor';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,9 +25,16 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { enableTracing: true }),
     AdminModule,
     LoginModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

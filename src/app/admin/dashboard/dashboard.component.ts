@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   statistical!: Statistical[];
   labels: string[] = [];
   data: number[] = [];
-  year: number = 2021;
+  year: number = 2024;
   myChartBar !: Chart;
   countYears!: number[];
 
@@ -72,19 +72,23 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getRevenueYear(year: number): number {
-    let revenue = 0
-    for (let i = 0; i < this.orders.length; i++) {
-      if (new Date(this.orders[i].orderDate).getFullYear() == year && this.orders[i].status == 2) {
-        revenue += this.orders[i].amount;
-      }
-    }
-    return revenue;
-  }
+  getRevenueYear(year: number): number {  
+    if (!this.orders || !Array.isArray(this.orders)) {  
+        return 0; 
+    }  
+    
+    let revenue = 0;  
+    for (let i = 0; i < this.orders.length; i++) {  
+        if (new Date(this.orders[i].orderDate).getFullYear() === year && this.orders[i].status === 2) {  
+            revenue += this.orders[i].amount;  
+        }  
+    }  
+    return revenue;  
+}
 
   getRevenueYearNow(): number {
     if (!this.orders || this.orders.length === 0) {
-      return 0; // Nếu chưa có dữ liệu, trả về 0
+      return 0;
     }
   
     let revenue = 0;
@@ -102,7 +106,7 @@ export class DashboardComponent implements OnInit {
 
   getRevenueMonthNow(): number {
     if (!this.orders || this.orders.length === 0) {
-      return 0; // Trả về 0 nếu chưa có đơn hàng
+      return 0;
     }
     let revenue = 0;
     for (let i = 0; i < this.orders.length; i++) {
@@ -207,7 +211,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openWebSocket() {
-    this.webSocket = new WebSocket('ws://localhost:8080/notification');
+    this.webSocket = new WebSocket('ws://localhost:8080/v1/notification');
 
     this.webSocket.onopen = (event) => {
       // console.log('Open: ', event);

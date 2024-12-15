@@ -73,21 +73,27 @@ export class OrderComponent implements OnInit {
     this.ngOnInit();
   }
 
-  openWebSocket() {
-    this.webSocket = new WebSocket('ws://localhost:8080/notification');
+  openWebSocket() {  
+    this.webSocket = new WebSocket('wss://localhost:8080/v1/notification');  
 
-    this.webSocket.onopen = (event) => {
-      // console.log('Open: ', event);
-    };
+    this.webSocket.onopen = (event) => {  
+        console.log('WebSocket đang mở.', event);  
+    };  
 
-    this.webSocket.onmessage = (event) => {
-      this.getAllOrder();
-    };
+    this.webSocket.onmessage = (event) => {  
+        console.log('Tin nhắn nhận được từ server:', event.data);  
+        this.getAllOrder(); // Làm mới danh sách đơn hàng khi nhận được tin nhắn  
+    };  
 
-    this.webSocket.onclose = (event) => {
-      // console.log('Close: ', event);
-    };
-  }
+    this.webSocket.onerror = (event) => {  
+        console.error('Lỗi WebSocket:', event);  
+        // this.toastr.error('Lỗi kết nối WebSocket!', 'Lỗi');  
+    };  
+
+    this.webSocket.onclose = (event) => {  
+        console.log('WebSocket đã đóng.', event);  
+    };  
+}
 
   closeWebSocket() {
     this.webSocket.close();

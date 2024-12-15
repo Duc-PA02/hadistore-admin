@@ -15,7 +15,7 @@
             <button mat-raised-button color="primary" style="float: right;" (click)="exporter.exportTable('csv', {fileName:'Danh sách đơn hàng'})">Xuất Excel</button>
             <table mat-table matTableExporter #exporter="matTableExporter" [hiddenColumns]="[7]" [dataSource]="listData" matSort class="mat-elevation-z8">
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 9%;">Mã HĐ</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 9%;">Mã ĐH</th>
                     <td mat-cell *matCellDef="let row">{{row.ordersId}}</td>
                 </ng-container>
                 <ng-container matColumnDef="user">

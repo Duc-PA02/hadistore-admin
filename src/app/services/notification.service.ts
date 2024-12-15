@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class NotificationService {
 
-  url = 'http://localhost:8080/api/notification';
+  url = 'http://localhost:8080/api/v1/notification';
 
   constructor(private http: HttpClient) { }
 
@@ -15,6 +15,6 @@ export class NotificationService {
   }
 
   readed(id: number) {
-    return this.http.get(this.url+'/readed/'+id);
+    return this.http.put(this.url+'/readed/',id);
   }
 }

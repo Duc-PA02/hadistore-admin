@@ -86,7 +86,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openWebSocket() {
-    this.webSocket = new WebSocket('ws://localhost:8080/notification');
+    this.webSocket = new WebSocket('ws://localhost:8080/v1/notification');
 
     this.webSocket.onopen = (event) => {
       // console.log('Open: ', event);
