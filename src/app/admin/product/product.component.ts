@@ -31,14 +31,19 @@ export class ProductComponent implements OnInit {
   }
 
   getAll() {
-    this.productService.getAll().subscribe(data => {
-      this.products = data as Product[];
-      this.listData = new MatTableDataSource(this.products);
-      this.listData.sort = this.sort;
-      this.listData.paginator = this.paginator;
-    }, error => {
-      console.log(error);
-    })
+    this.productService.getAll().subscribe(
+      data => {
+        this.products = data as Product[];
+        this.listData = new MatTableDataSource(this.products);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      },
+      error => {
+        console.error('Error response:', error); // Log toàn bộ error để phân tích
+        console.error('Raw error text:', error?.error?.text); // Log chi tiết raw response
+      }
+    );
+    
   }
 
   delete(id: number, name: string) {

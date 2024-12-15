@@ -63,7 +63,7 @@ export class OrderDetailComponent implements OnInit {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.orderService.deliver(this.orderId).subscribe(data => {
+        this.orderService.deliver(this.orderId, 1).subscribe(data => {
           this.toastr.success('Xác nhận thành công!', 'Hệ thống');
           this.updateFinish.emit('done');
           this.modalService.dismissAll();
@@ -83,7 +83,7 @@ export class OrderDetailComponent implements OnInit {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.orderService.cancel(this.orderId).subscribe(data => {
+        this.orderService.cancel(this.orderId, 3).subscribe(data => {
           this.toastr.success('Huỷ thành công!', 'Hệ thống');
           this.updateFinish.emit('done');
           this.modalService.dismissAll();
@@ -103,7 +103,7 @@ export class OrderDetailComponent implements OnInit {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.orderService.success(this.orderId).subscribe(data => {
+        this.orderService.success(this.orderId, 2).subscribe(data => {
           this.toastr.success('Xác nhận thành công!', 'Hệ thống');
           this.updateFinish.emit('done');
           this.modalService.dismissAll();

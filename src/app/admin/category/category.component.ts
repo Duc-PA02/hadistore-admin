@@ -55,12 +55,15 @@ export class CategoryComponent implements OnInit {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.categoryService.delete(id).subscribe(data => {
-          this.ngOnInit();
-          this.toastr.success('Thông báo xoá thành công!', 'Hệ thống');
-        }, error => {
-          this.toastr.error('Thông báo xoá thất bại, đã xảy ra lỗi!', 'Hệ thống');
-        })
+        this.categoryService.delete(id).subscribe({
+          next: () => {
+            this.toastr.success('Thông báo xoá thành công!', 'Hệ thống');
+            this.ngOnInit();
+          },
+          error: (error) => {
+            this.toastr.error('Thông báo xoá thất bại, đã xảy ra lỗi!', 'Hệ thống');
+          }
+        });        
       }
     })
   }
