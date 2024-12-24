@@ -19,7 +19,7 @@ export class CustomerService {
     return this.httpClient.post(this.url, customer);
   }
 
-  getOne(id: number) {
+  getUserById(id: number) {
     return this.httpClient.get(this.url + '/' + id);
   }
 
@@ -33,9 +33,5 @@ export class CustomerService {
 
   update(id: number, customer: Customer) {
     return this.httpClient.put(this.url + '/' + id, customer);
-  }
-
-  updateAdmin(id: number, customer: Customer) {
-    return this.httpClient.put(this.url + '/admin/' + id, customer);
   }
 }

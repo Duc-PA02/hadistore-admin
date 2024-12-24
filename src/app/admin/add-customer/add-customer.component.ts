@@ -19,7 +19,7 @@ export class AddCustomerComponent implements OnInit {
   saveFinish: EventEmitter<any> = new EventEmitter<any>();
 
   selectFile!: File;
-  url: string = 'https://res.cloudinary.com/veggie-shop/image/upload/v1633795994/users/mnoryxp056ohm0b4gcrj.png';
+  url: string = '';
   image: string = this.url;
 
   postForm: FormGroup;
