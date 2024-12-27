@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { ApiResponse } from 'src/app/common/ApiResponse';
 import { Customer } from 'src/app/common/Customer';
 import { CustomerService } from 'src/app/services/customer.service';
 import { PageService } from 'src/app/services/page.service';
@@ -46,7 +47,7 @@ export class CustomerComponent implements OnInit {
     })
   }
 
-  delete(id: number, name: String) {
+  delete(id: number, name: string) {
     Swal.fire({
       title: 'Bạn muốn xoá người dùng có tên ' + name + ' ?',
       icon: 'warning',
@@ -55,16 +56,25 @@ export class CustomerComponent implements OnInit {
       cancelButtonText: 'Không'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.customerService.delete(id).subscribe(data => {
-          this.ngOnInit();
-          this.toastr.success('Thông báo xoá thành công!', 'Hệ thống');
-        }, error => {
-          this.toastr.error('Thông báo xoá thất bại, đã xảy ra lỗi!', 'Hệ thống');
-        })
+        this.customerService.delete(id).subscribe({
+          next: (response: ApiResponse) => {
+            if (response.status === 400) {
+              this.toastr.error(response.message || 'Không thể xoá người dùng.', 'Hệ thống');
+            } else if (response.status === 500) {
+              this.toastr.error('Đã xảy ra lỗi hệ thống!', 'Hệ thống');
+            } else {
+              this.ngOnInit();
+              this.toastr.success('Thông báo xoá thành công!', 'Hệ thống');
+            }
+          },
+          error: () => {
+            this.toastr.error('Đã xảy ra lỗi không mong muốn!', 'Hệ thống');
+          }
+        });
       }
-    })
+    });
   }
-
+  
   search(event: any) {
     const fValue = (event.target as HTMLInputElement).value;
     this.listData.filter = fValue.trim().trim().toLowerCase();
