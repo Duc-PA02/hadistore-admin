@@ -60,7 +60,7 @@ export class EditCustomerComponent implements OnInit {
   }
 
   getCustomer() {
-    this.customerService.getOne(this.id).subscribe(data => {
+    this.customerService.getUserById(this.id).subscribe(data => {
       this.customer = data as Customer;
       this.postForm = new FormGroup({
         'userId': new FormControl(this.customer.userId),

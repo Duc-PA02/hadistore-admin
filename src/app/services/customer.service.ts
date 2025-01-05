@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Customer } from '../common/Customer';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../common/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,7 @@ export class CustomerService {
     return this.httpClient.post(this.url, customer);
   }
 
-  getOne(id: number) {
+  getUserById(id: number) {
     return this.httpClient.get(this.url + '/' + id);
   }
 
@@ -27,15 +29,11 @@ export class CustomerService {
     return this.httpClient.get(this.url + '/email/' + email);
   }
 
-  delete(id: number) {
-    return this.httpClient.delete(this.url + '/' + id);
+  delete(id: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(this.url + '/' + id);
   }
 
   update(id: number, customer: Customer) {
     return this.httpClient.put(this.url + '/' + id, customer);
-  }
-
-  updateAdmin(id: number, customer: Customer) {
-    return this.httpClient.put(this.url + '/admin/' + id, customer);
   }
 }

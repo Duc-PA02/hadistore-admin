@@ -52,7 +52,7 @@ export class ProfileComponent implements OnInit {
     if(this.postForm.valid) {
       this.customer = this.postForm.value;
       this.customer.image = this.image;
-      this.customerService.updateAdmin(this.customer.userId, this.customer).subscribe(data=>{
+      this.customerService.update(this.customer.userId, this.customer).subscribe(data=>{
         this.toastr.success('Cập nhật thành công!', 'Hệ thống');
         this.editFinish.emit('done');        
       })      

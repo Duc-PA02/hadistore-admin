@@ -13,13 +13,14 @@ export class WebSocketService {
   constructor(private toastr: ToastrService) { }
 
   public openWebSocket() {
-    this.webSocket = new WebSocket('ws://localhost:8080/v1/notification');
+    this.webSocket = new WebSocket('ws://localhost:8080/notification');
 
     this.webSocket.onopen = (event) => {
       // console.log('Open: ', event);
     };
 
     this.webSocket.onmessage = (event) => {
+      console.error('WebSocket error: ', event);
       const chatMessageDto = JSON.parse(event.data);
       let mess: ChatMessage = chatMessageDto as ChatMessage;
       this.toastr.info('Khách hàng '+mess.user+' đã đặt 1 đơn hàng!', 'Hệ thống');
